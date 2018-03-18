@@ -63,8 +63,8 @@ public class ConcreteVerticesGraph implements Graph<String> {
 
     @Override
     public boolean remove(String vertex) {
-        Map<String, Integer> sources = new HashMap<>();
-        Map<String, Integer> targets = new HashMap<>();
+        Map<String, Integer> sources;
+        Map<String, Integer> targets;
         Vertex deleteVertex = null;
         boolean vertexExist = false;
         for (Vertex item : vertices) {

@@ -16,15 +16,27 @@ public class ConcreteEdgesGraph implements Graph<String> {
     private final List<Edge> edges = new ArrayList<>();
 
     // Abstraction function:
-    //   TODO
+    // use a universe String to represent vertex,use edge class to represent edge
     // Representation invariant:
-    //   TODO
+    /*
+     * the vertex should be universe and not null,the weight of the edge must be positive,
+     * the two vertices of the edge should not be the same
+     */
     // Safety from rep exposure:
-    //   TODO
+    // make the rep be private and final ,don't provide public function to modify the value of these fields
 
-    // TODO constructor
+    ConcreteEdgesGraph() {
+    }
 
-    // TODO checkRep
+    private void checkRep() {
+        for (String vertex : vertices) {
+            assert (vertex != null);
+        }
+        for (Edge edge : edges) {
+            assert (edge.getWeight() > 0);
+            assert (!edge.getSource().equals(edge.getTarget()));
+        }
+    }
 
     @Override
     public boolean add(String vertex) {
@@ -100,8 +112,10 @@ public class ConcreteEdgesGraph implements Graph<String> {
         return targets;
     }
 
-    // TODO toString()
-
+    @Override
+    public String toString() {
+        return "the number of vertices is  " + vertices.size() + " ,the number of edges is " + edges.size();
+    }
 }
 
 /**
@@ -118,37 +132,47 @@ class Edge {
     private int weight;
 
     // Abstraction function:
-    //   TODO
+    /*
+     * the source String means the start vertex of the edge,
+     * and the target String means the end vertex of the edge,
+     * the integer weight means the weight of the edge
+     */
     // Representation invariant:
-    //   TODO
+    // the weight of the edge must be positive and the source and the target must be different
     // Safety from rep exposure:
-    //   TODO
+    // make the source ,target,weight private and final,don't provide method to modify them
 
     Edge(String source, String target, int weight) {
+        checkRep();
         this.source = source;
         this.target = target;
         this.weight = weight;
+        checkRep();
     }
 
-    // TODO checkRep
+    private void checkRep() {
+        assert (!source.equals(target));
+        assert (weight > 0);
+    }
 
-    // TODO methods
-
-    public boolean equal(Edge obj) {
+    boolean equal(Edge obj) {
         return this.source.equals(obj.getSource()) && this.target.equals(obj.getTarget());
     }
 
-    public String getSource() {
+    String getSource() {
         return source;
     }
 
-    public String getTarget() {
+    String getTarget() {
         return target;
     }
 
-    public int getWeight() {
+    int getWeight() {
         return weight;
     }
-    // TODO toString()
 
+    @Override
+    public String toString() {
+        return "the source vertex is " + source + " the target vertex is " + target + " ,the weight is " + weight;
+    }
 }
