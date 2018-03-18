@@ -39,11 +39,23 @@ public class ConcreteVerticesGraph implements Graph<String> {
     @Override
     public int set(String source, String target, int weight) {
         int lastWeight = 0;
+        if (weight != 0) {
+            add(source);
+            add(target);
+        }
         for (Vertex vertex : vertices) {
-            if (vertex.getLabel().equals(source))
-                lastWeight = vertex.setOutEdge(target, weight);
+            if (vertex.getLabel().equals(source)) {
+                if (weight != 0)
+                    lastWeight = vertex.setOutEdge(target, weight);
+                else {
+                    lastWeight = vertex.removeOutEdge(target);
+                }
+            }
             if (vertex.getLabel().equals(target)) {
-                lastWeight = vertex.setInEdge(source, weight);
+                if (weight != 0)
+                    lastWeight = vertex.setInEdge(source, weight);
+                else
+                    lastWeight = vertex.removeInEdge(source);
             }
         }
         return lastWeight;
@@ -53,10 +65,12 @@ public class ConcreteVerticesGraph implements Graph<String> {
     public boolean remove(String vertex) {
         Map<String, Integer> sources = new HashMap<>();
         Map<String, Integer> targets = new HashMap<>();
+        Vertex deleteVertex = null;
         boolean vertexExist = false;
         for (Vertex item : vertices) {
             if (item.getLabel().equals(vertex)) {
                 vertexExist = true;
+                deleteVertex = item;
                 break;
             }
         }
@@ -71,6 +85,7 @@ public class ConcreteVerticesGraph implements Graph<String> {
                     item.removeInEdge(vertex);
                 }
             }
+            vertices.remove(deleteVertex);
             return true;
         }
         return false;
@@ -147,6 +162,7 @@ class Vertex {
                 return lastWeight;
             }
         }
+        inEdges.put(source, weight);
         return 0;
     }
 
@@ -159,6 +175,7 @@ class Vertex {
                 return lastWeight;
             }
         }
+        outEdges.put(target, weight);
         return 0;
     }
 
@@ -174,24 +191,24 @@ class Vertex {
         return targets;
     }
 
-    public boolean removeInEdge(String source) {
+    public int removeInEdge(String source) {
         for (Map.Entry<String, Integer> entry : inEdges.entrySet()) {
             if (entry.getKey().equals(source)) {
                 inEdges.remove(entry);
-                return true;
+                return entry.getValue();
             }
         }
-        return false;
+        return 0;
     }
 
-    public boolean removeOutEdge(String target) {
+    public int removeOutEdge(String target) {
         for (Map.Entry<String, Integer> entry : outEdges.entrySet()) {
             if (entry.getKey().equals(target)) {
                 outEdges.remove(entry);
-                return true;
+                return entry.getValue();
             }
         }
-        return false;
+        return 0;
     }
 
     @Override
