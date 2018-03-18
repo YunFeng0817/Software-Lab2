@@ -60,6 +60,8 @@ public abstract class GraphInstanceTest {
         Graph<String> emptyInstance = emptyInstance();
         /* test if weight is zero,if the edge is added to the graph */
         assertEquals(0, emptyInstance.set("first", "second", 0));
+        /* to the if the "first" to "second" edge is add to the graph */
+        assertEquals(true, emptyInstance.add("second"));
         /* test if weight is non-zero ,if the specific edge is add to the graph */
         assertEquals(0, emptyInstance.set("first", "second", 10));
         /* test if the edge is already exist,if the weight of the edge is modified */

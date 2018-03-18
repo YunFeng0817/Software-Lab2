@@ -38,21 +38,23 @@ public class ConcreteEdgesGraph implements Graph<String> {
     @Override
     public int set(String source, String target, int weight) {
         Edge instance = new Edge(source, target, weight);
-        int lastWeight; // this variable is to store the previous edge weight of the changed edge
+        int lastWeight = 0; // this variable is to store the previous edge weight of the changed edge
         // to search if the input edge is in edges
         for (Edge edge : edges) {
             if (edge.equal(instance)) {
                 lastWeight = edge.getWeight();
-                if (weight == 0) {
-                    edges.remove(edge);
-                } else {
-                    edge.setWeight(weight);
-                }
+                edges.remove(edge);
+                if (weight != 0)
+                    edges.add(instance);
                 return lastWeight;
             }
         }
-        // the input edge is not in edges
-        edges.add(instance);
+        // the input edge is not in edges case
+        if (weight != 0) {
+            vertices.add(source);
+            vertices.add(target);
+            edges.add(instance);
+        }
         return 0;
     }
 
@@ -60,9 +62,11 @@ public class ConcreteEdgesGraph implements Graph<String> {
     public boolean remove(String vertex) {
         if (!vertices.contains(vertex))
             return false;
-        for (Edge edge : edges) {
+        ListIterator<Edge> iterator = edges.listIterator();
+        while (iterator.hasNext()) {
+            Edge edge = iterator.next();
             if (edge.getSource().equals(vertex) || edge.getTarget().equals(vertex)) {
-                edges.remove(edge);
+                iterator.remove();
             }
         }
         // search for the specific String object to remove it
@@ -145,11 +149,6 @@ class Edge {
     public int getWeight() {
         return weight;
     }
-
-    public void setWeight(int newWeight) {
-        this.weight = newWeight;
-    }
-
     // TODO toString()
 
 }
