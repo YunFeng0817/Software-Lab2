@@ -78,7 +78,11 @@ public class ConcreteVerticesGraph implements Graph<String> {
 
     @Override
     public Set<String> vertices() {
-        throw new RuntimeException("not implemented");
+        Set<String> vertices = new HashSet<>();
+        for (Vertex vertex : this.vertices) {
+            vertices.add(vertex.getLabel());
+        }
+        return vertices;
     }
 
     @Override
@@ -182,22 +186,13 @@ class Vertex {
 
     public boolean removeOutEdge(String target) {
         for (Map.Entry<String, Integer> entry : outEdges.entrySet()) {
-            if (entry.getKey().equals(target)){
+            if (entry.getKey().equals(target)) {
                 outEdges.remove(entry);
                 return true;
             }
         }
         return false;
     }
-
-    public boolean addInEdge(String source, int weight) {
-        return true;
-    }
-
-    public boolean addOutEdge(String target, int weight) {
-        return true;
-    }
-    // TODO toString()
 
     @Override
     public String toString() {
