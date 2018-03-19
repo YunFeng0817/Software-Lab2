@@ -91,7 +91,7 @@ public abstract class GraphInstanceTest {
         /*
          * add some init data to the graph for this test
          */
-        assertEquals(true, emptyInstance().add("first"));
+        assertEquals(true, emptyInstance.add("first"));
         assertEquals(0, emptyInstance.set("first", "second", 10));
         assertEquals(0, emptyInstance.set("third", "fourth", 100));
         assertEquals(0, emptyInstance.set("third", "second", 20));
@@ -112,7 +112,7 @@ public abstract class GraphInstanceTest {
         /*
          * add some init data to the graph for this test
          */
-        assertEquals(true, emptyInstance().add("first"));
+        assertEquals(true, emptyInstance.add("first"));
         assertEquals(0, emptyInstance.set("first", "second", 10));
         assertEquals(0, emptyInstance.set("third", "fourth", 100));
         assertEquals(0, emptyInstance.set("third", "second", 20));
@@ -132,7 +132,7 @@ public abstract class GraphInstanceTest {
         /*
          * add some init data to the graph for this test
          */
-        assertEquals(true, emptyInstance().add("first"));
+        assertEquals(true, emptyInstance.add("first"));
         assertEquals(0, emptyInstance.set("first", "second", 10));
         assertEquals(0, emptyInstance.set("third", "fourth", 100));
         assertEquals(0, emptyInstance.set("third", "second", 20));
@@ -150,7 +150,7 @@ public abstract class GraphInstanceTest {
         /*
          * add some init data to the graph for this test
          */
-        assertEquals(true, emptyInstance().add("first"));
+        assertEquals(true, emptyInstance.add("first"));
         assertEquals(0, emptyInstance.set("first", "second", 10));
         assertEquals(0, emptyInstance.set("third", "fourth", 100));
         assertEquals(0, emptyInstance.set("third", "second", 20));
