@@ -10,7 +10,7 @@ import java.util.*;
  * <p>
  * <p>PS2 instructions: you MUST use the provided rep.
  */
-public class ConcreteVerticesGraph implements Graph<String> {
+public class ConcreteVerticesGraph<L> implements Graph<L> {
 
     private final List<Vertex> vertices = new ArrayList<>();
 
@@ -26,7 +26,7 @@ public class ConcreteVerticesGraph implements Graph<String> {
     // TODO checkRep
 
     @Override
-    public boolean add(String vertex) {
+    public boolean add(L vertex) {
         for (Vertex item : vertices) {
             if (item.getLabel().equals(vertex))
                 return false;
@@ -37,7 +37,7 @@ public class ConcreteVerticesGraph implements Graph<String> {
     }
 
     @Override
-    public int set(String source, String target, int weight) {
+    public int set(L source, L target, int weight) {
         int lastWeight = 0;
         if (weight != 0) {
             add(source);
@@ -62,9 +62,9 @@ public class ConcreteVerticesGraph implements Graph<String> {
     }
 
     @Override
-    public boolean remove(String vertex) {
-        Map<String, Integer> sources;
-        Map<String, Integer> targets;
+    public boolean remove(L vertex) {
+        Map<L, Integer> sources;
+        Map<L, Integer> targets;
         Vertex deleteVertex = null;
         boolean vertexExist = false;
         for (Vertex item : vertices) {
@@ -92,16 +92,16 @@ public class ConcreteVerticesGraph implements Graph<String> {
     }
 
     @Override
-    public Set<String> vertices() {
-        Set<String> vertices = new HashSet<>();
+    public Set<L> vertices() {
+        Set<L> vertices = new HashSet<>();
         for (Vertex vertex : this.vertices) {
-            vertices.add(vertex.getLabel());
+            vertices.add((L) vertex.getLabel());
         }
         return vertices;
     }
 
     @Override
-    public Map<String, Integer> sources(String target) {
+    public Map<L, Integer> sources(L target) {
         for (Vertex vertex : vertices)
             if (vertex.getLabel().equals(target))
                 return vertex.getSources();
@@ -109,7 +109,7 @@ public class ConcreteVerticesGraph implements Graph<String> {
     }
 
     @Override
-    public Map<String, Integer> targets(String source) {
+    public Map<L, Integer> targets(L source) {
         for (Vertex vertex : vertices)
             if (vertex.getLabel().equals(source))
                 return vertex.getTargets();
@@ -128,12 +128,12 @@ public class ConcreteVerticesGraph implements Graph<String> {
  * <p>PS2 instructions: the specification and implementation of this class is
  * up to you.
  */
-class Vertex {
+class Vertex<L> {
 
     // TODO fields
-    private String label;
-    private Map<String, Integer> inEdges = new HashMap<>();
-    private Map<String, Integer> outEdges = new HashMap<>();
+    private L label;
+    private Map<L, Integer> inEdges = new HashMap<>();
+    private Map<L, Integer> outEdges = new HashMap<>();
 
     // Abstraction function:
     //   TODO
@@ -143,19 +143,19 @@ class Vertex {
     //   TODO
 
     // TODO constructor
-    Vertex(String name) {
+    Vertex(L name) {
         label = name;
     }
     // TODO checkRep
 
     // TODO methods
-    public String getLabel() {
+    public L getLabel() {
         return label;
     }
 
-    public int setInEdge(String source, int weight) {
+    public int setInEdge(L source, int weight) {
         int lastWeight;
-        for (Map.Entry<String, Integer> entry : inEdges.entrySet()) {
+        for (Map.Entry<L, Integer> entry : inEdges.entrySet()) {
             if (entry.getKey().equals(source)) {
                 lastWeight = entry.getValue();
                 inEdges.put(source, weight);
@@ -166,9 +166,9 @@ class Vertex {
         return 0;
     }
 
-    public int setOutEdge(String target, int weight) {
+    public int setOutEdge(L target, int weight) {
         int lastWeight;
-        for (Map.Entry<String, Integer> entry : outEdges.entrySet()) {
+        for (Map.Entry<L, Integer> entry : outEdges.entrySet()) {
             if (entry.getKey().equals(target)) {
                 lastWeight = entry.getValue();
                 outEdges.put(target, weight);
@@ -179,20 +179,20 @@ class Vertex {
         return 0;
     }
 
-    public Map<String, Integer> getSources() {
-        Map<String, Integer> sources = new HashMap<>();
+    public Map<L, Integer> getSources() {
+        Map<L, Integer> sources = new HashMap<>();
         sources.putAll(inEdges);
         return sources;
     }
 
-    public Map<String, Integer> getTargets() {
-        Map<String, Integer> targets = new HashMap<>();
+    public Map<L, Integer> getTargets() {
+        Map<L, Integer> targets = new HashMap<>();
         targets.putAll(outEdges);
         return targets;
     }
 
-    public int removeInEdge(String source) {
-        for (Map.Entry<String, Integer> entry : inEdges.entrySet()) {
+    public int removeInEdge(L source) {
+        for (Map.Entry<L, Integer> entry : inEdges.entrySet()) {
             if (entry.getKey().equals(source)) {
                 inEdges.remove(entry);
                 return entry.getValue();
@@ -201,8 +201,8 @@ class Vertex {
         return 0;
     }
 
-    public int removeOutEdge(String target) {
-        for (Map.Entry<String, Integer> entry : outEdges.entrySet()) {
+    public int removeOutEdge(L target) {
+        for (Map.Entry<L, Integer> entry : outEdges.entrySet()) {
             if (entry.getKey().equals(target)) {
                 outEdges.remove(entry);
                 return entry.getValue();
@@ -213,6 +213,6 @@ class Vertex {
 
     @Override
     public String toString() {
-        return label;
+        return label.toString();
     }
 }
