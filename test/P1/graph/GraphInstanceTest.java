@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 /**
  * Tests for instance methods of Graph.
@@ -23,9 +24,14 @@ import org.junit.Test;
  */
 public abstract class GraphInstanceTest {
 
-    // Testing strategy
-    // in every function,I will generate an empty GraphInstance and use the method belong to it
-    // and compare the result of method with my expect
+    /* Testing strategy
+     * in every function,I will generate an empty GraphInstance and use the method in it
+     * add one new point,add one point that has existed
+     * weight: <0 0 >0
+     * vertex: exist , don't exist ,two same vertices
+     * vertex: String type,int type char type
+     * then combine vertex cases and weight cases to test
+     */
 
     /**
      * Overridden by implementation-specific test classes.
@@ -68,6 +74,14 @@ public abstract class GraphInstanceTest {
         assertEquals(10, emptyInstance.set("first", "second", 21));
         /* test if weight is zero, if the specific edge is removed */
         assertEquals(21, emptyInstance.set("first", "second", 0));
+        assertEquals(0, emptyInstance.set("first", "first", 1));
+        assertEquals(1, emptyInstance.set("first", "first", 0));
+        try {
+            emptyInstance().set("first", "fifth", -2);
+            fail("when weight is negative , no exception");
+        } catch (RuntimeException e) {
+            assertTrue(e.getMessage().equals("weight can't be negative"));
+        }
     }
 
     @Test

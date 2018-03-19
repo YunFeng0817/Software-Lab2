@@ -34,7 +34,6 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
         }
         for (Edge edge : edges) {
             assert (edge.getWeight() > 0);
-            assert (!edge.getSource().equals(edge.getTarget()));
         }
     }
 
@@ -49,6 +48,9 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
 
     @Override
     public int set(L source, L target, int weight) {
+        if(weight<0){
+            throw new RuntimeException("weight can't be negative");
+        }
         Edge instance;
         int lastWeight = 0; // this variable is to store the previous edge weight of the changed edge
         // to search if the input edge is in edges
@@ -56,10 +58,11 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
             if (edge.sameVertex(source, target)) {
                 lastWeight = edge.getWeight();
                 edges.remove(edge);
-                if (weight != 0) {
+                if (weight > 0) {
                     instance = new Edge(source, target, weight);
                     edges.add(instance);
                 }
+                checkRep();
                 return lastWeight;
             }
         }
@@ -70,6 +73,7 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
             vertices.add(target);
             edges.add(instance);
         }
+        checkRep();
         return 0;
     }
 
@@ -77,24 +81,23 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
     public boolean remove(L vertex) {
         if (!vertices.contains(vertex))
             return false;
-        ListIterator<Edge> iterator = edges.listIterator();
-        while (iterator.hasNext()) {
-            Edge edge = iterator.next();
-            if (edge.getSource().equals(vertex) || edge.getTarget().equals(vertex)) {
-                iterator.remove();
-            }
-        }
-        // search for the specific L object to remove it
-        for (L i : vertices) {
-            if (i.equals(vertex))
-                vertices.remove(i);
-        }
+//        ListIterator<Edge> iterator = edges.listIterator();
+//        while (iterator.hasNext()) {
+//            Edge edge = iterator.next();
+//            if (edge.getSource().equals(vertex) || edge.getTarget().equals(vertex)) {
+//                iterator.remove();
+//            }
+//        }
+        // simple expression
+        edges.removeIf(edge -> edge.getSource().equals(vertex) || edge.getTarget().equals(vertex));
+        vertices.remove(vertex);
+        checkRep();
         return true;
     }
 
     @Override
     public Set<L> vertices() {
-        return vertices;
+        return new HashSet<>(vertices);
     }
 
     @Override
@@ -103,6 +106,7 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
         for (Edge edge : edges)
             if (target.equals(edge.getTarget()))
                 sources.put((L) edge.getSource(), edge.getWeight());
+        checkRep();
         return sources;
     }
 
@@ -112,6 +116,7 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
         for (Edge edge : edges)
             if (edge.getSource().equals(source))
                 targets.put((L) edge.getTarget(), edge.getWeight());
+        checkRep();
         return targets;
     }
 
@@ -153,7 +158,6 @@ class Edge<L> {
     }
 
     private void checkRep() {
-        assert (!this.source.equals(this.target));
         assert (weight > 0);
     }
 

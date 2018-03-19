@@ -39,13 +39,14 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     @Override
     public int set(L source, L target, int weight) {
         int lastWeight = 0;
-        if (weight != 0) {
+        if (weight > 0) {
             add(source);
             add(target);
-        }
+        } else if (weight < 0)
+            throw new RuntimeException("weight can't be negative");
         for (Vertex vertex : vertices) {
             if (vertex.getLabel().equals(source)) {
-                if (weight != 0)
+                if (weight > 0)
                     lastWeight = vertex.setOutEdge(target, weight);
                 else {
                     lastWeight = vertex.removeOutEdge(target);
@@ -65,30 +66,19 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     public boolean remove(L vertex) {
         Map<L, Integer> sources;
         Map<L, Integer> targets;
-        Vertex deleteVertex = null;
-        boolean vertexExist = false;
+        if (!vertices.removeIf(vertexIterator -> vertexIterator.getLabel().equals(vertex)))
+            return false;
+        sources = sources(vertex);
+        targets = targets(vertex);
         for (Vertex item : vertices) {
-            if (item.getLabel().equals(vertex)) {
-                vertexExist = true;
-                deleteVertex = item;
-                break;
+            if (sources.get(item.getLabel()) != null) {
+                item.removeOutEdge(vertex);
+            }
+            if (targets.get(item.getLabel()) != null) {
+                item.removeInEdge(vertex);
             }
         }
-        if (vertexExist) {
-            sources = sources(vertex);
-            targets = targets(vertex);
-            for (Vertex item : vertices) {
-                if (sources.get(item.getLabel()) != null) {
-                    item.removeOutEdge(vertex);
-                }
-                if (targets.get(item.getLabel()) != null) {
-                    item.removeInEdge(vertex);
-                }
-            }
-            vertices.remove(deleteVertex);
-            return true;
-        }
-        return false;
+        return true;
     }
 
     @Override
@@ -97,14 +87,14 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
         for (Vertex vertex : this.vertices) {
             vertices.add((L) vertex.getLabel());
         }
-        return vertices;
+        return new HashSet<>(vertices);
     }
 
     @Override
     public Map<L, Integer> sources(L target) {
         for (Vertex vertex : vertices)
             if (vertex.getLabel().equals(target))
-                return vertex.getSources();
+                return new HashMap<>(vertex.getSources());
         return new HashMap<>();
     }
 
@@ -112,7 +102,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     public Map<L, Integer> targets(L source) {
         for (Vertex vertex : vertices)
             if (vertex.getLabel().equals(source))
-                return vertex.getTargets();
+                return new HashMap<>(vertex.getTargets());
         return new HashMap<>();
     }
 
