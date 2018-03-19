@@ -15,15 +15,26 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     private final List<Vertex> vertices = new ArrayList<>();
 
     // Abstraction function:
-    //   TODO
+    // the vertex list represent the node in graph
+    // the vertex class contain the out coming edge and the in coming edge
+
     // Representation invariant:
-    //   TODO
+    // the weight must be non-negative
+    // the number of  out coming edges must be the same with the in coming edges
+    // the label of the vertex can't be null
+
     // Safety from rep exposure:
-    //   TODO
+    // the vertex class can't be gotten by outside
+    // make the vertices be private and final and immutable
 
-    // TODO constructor
+    ConcreteVerticesGraph() {
+    }
 
-    // TODO checkRep
+    private void checkRep() {
+        for (Vertex<L> vertex : vertices) {
+            assert (vertex.getLabel() != null);
+        }
+    }
 
     @Override
     public boolean add(L vertex) {
@@ -33,6 +44,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
         }
         Vertex newVertex = new Vertex(vertex);
         vertices.add(newVertex);
+        checkRep();
         return true;
     }
 
@@ -59,6 +71,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
                     lastWeight = vertex.removeInEdge(source);
             }
         }
+        checkRep();
         return lastWeight;
     }
 
@@ -78,6 +91,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
                 item.removeInEdge(vertex);
             }
         }
+        checkRep();
         return true;
     }
 
@@ -87,6 +101,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
         for (Vertex vertex : this.vertices) {
             vertices.add((L) vertex.getLabel());
         }
+        checkRep();
         return new HashSet<>(vertices);
     }
 
@@ -95,6 +110,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
         for (Vertex vertex : vertices)
             if (vertex.getLabel().equals(target))
                 return new HashMap<>(vertex.getSources());
+        checkRep();
         return new HashMap<>();
     }
 
@@ -103,15 +119,20 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
         for (Vertex vertex : vertices)
             if (vertex.getLabel().equals(source))
                 return new HashMap<>(vertex.getTargets());
+        checkRep();
         return new HashMap<>();
     }
 
-    // TODO toString()
-
+    @Override
+    public String toString() {
+        return "This graph has " + vertices.size() + " vertices";
+    }
 }
 
 /**
- * TODO specification
+ * This class is mutable ,
+ * the number of  out coming edges must be the same with the in coming edges
+ * the weight must be non-negative
  * Mutable.
  * This class is internal to the rep of ConcreteVerticesGraph.
  * <p>
@@ -120,25 +141,39 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
  */
 class Vertex<L> {
 
-    // TODO fields
     private L label;
     private Map<L, Integer> inEdges = new HashMap<>();
     private Map<L, Integer> outEdges = new HashMap<>();
 
     // Abstraction function:
-    //   TODO
-    // Representation invariant:
-    //   TODO
-    // Safety from rep exposure:
-    //   TODO
+    // the label represent the vertex
+    // the inEdges represent the in coming edges,
+    // the outEdges represent the out coming edges
+    // one edge contain the source vertex and the weight of the edge
 
-    // TODO constructor
+    // Representation invariant:
+    // the number of  out coming edges must be the same with the in coming edges
+    // the weight must be non-negative
+    // the label can't be null
+
+    // Safety from rep exposure:
+    // the inEdges and outEdges can't be gotten outside
+
     Vertex(L name) {
         label = name;
     }
-    // TODO checkRep
 
-    // TODO methods
+    private void checkRep() {
+        for (Integer weight : inEdges.values()) {
+            assert (weight > 0);
+        }
+        for (Integer weight : outEdges.values()) {
+            assert (weight > 0);
+        }
+        assert (label != null);
+    }
+
+
     public L getLabel() {
         return label;
     }
@@ -153,6 +188,7 @@ class Vertex<L> {
             }
         }
         inEdges.put(source, weight);
+        checkRep();
         return 0;
     }
 
@@ -166,18 +202,21 @@ class Vertex<L> {
             }
         }
         outEdges.put(target, weight);
+        checkRep();
         return 0;
     }
 
     public Map<L, Integer> getSources() {
         Map<L, Integer> sources = new HashMap<>();
         sources.putAll(inEdges);
+        checkRep();
         return sources;
     }
 
     public Map<L, Integer> getTargets() {
         Map<L, Integer> targets = new HashMap<>();
         targets.putAll(outEdges);
+        checkRep();
         return targets;
     }
 
@@ -185,9 +224,11 @@ class Vertex<L> {
         for (Map.Entry<L, Integer> entry : inEdges.entrySet()) {
             if (entry.getKey().equals(source)) {
                 inEdges.remove(entry);
+                checkRep();
                 return entry.getValue();
             }
         }
+        checkRep();
         return 0;
     }
 
@@ -195,9 +236,11 @@ class Vertex<L> {
         for (Map.Entry<L, Integer> entry : outEdges.entrySet()) {
             if (entry.getKey().equals(target)) {
                 outEdges.remove(entry);
+                checkRep();
                 return entry.getValue();
             }
         }
+        checkRep();
         return 0;
     }
 

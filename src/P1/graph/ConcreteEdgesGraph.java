@@ -48,7 +48,7 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
 
     @Override
     public int set(L source, L target, int weight) {
-        if(weight<0){
+        if (weight < 0) {
             throw new RuntimeException("weight can't be negative");
         }
         Edge instance;
@@ -127,7 +127,8 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
 }
 
 /**
- * TODO specification
+ * The edge class must be immutable,
+ * the rep can only be set on time
  * Immutable.
  * This class is internal to the rep of ConcreteEdgesGraph.
  * <p>
@@ -151,9 +152,11 @@ class Edge<L> {
     // make the source ,target,weight private and final,don't provide method to modify them
 
     Edge(L source, L target, int weight) {
-        this.source = source;
-        this.target = target;
-        this.weight = weight;
+        if (weight > 0) {
+            this.source = source;
+            this.target = target;
+            this.weight = weight;
+        }
         checkRep();
     }
 
