@@ -10,13 +10,13 @@ import java.util.*;
  * <p>
  * <p>PS2 instructions: you MUST use the provided rep.
  */
-public class ConcreteEdgesGraph implements Graph<String> {
+public class ConcreteEdgesGraph<L> implements Graph<L> {
 
-    private final Set<String> vertices = new HashSet<>();
+    private final Set<L> vertices = new HashSet<>();
     private final List<Edge> edges = new ArrayList<>();
 
     // Abstraction function:
-    // use a universe String to represent vertex,use edge class to represent edge
+    // use a universe L to represent vertex,use edge class to represent edge
     // Representation invariant:
     /*
      * the vertex should be universe and not null,the weight of the edge must be positive,
@@ -29,7 +29,7 @@ public class ConcreteEdgesGraph implements Graph<String> {
     }
 
     private void checkRep() {
-        for (String vertex : vertices) {
+        for (L vertex : vertices) {
             assert (vertex != null);
         }
         for (Edge edge : edges) {
@@ -39,7 +39,7 @@ public class ConcreteEdgesGraph implements Graph<String> {
     }
 
     @Override
-    public boolean add(String vertex) {
+    public boolean add(L vertex) {
         if (!vertices.contains(vertex)) {
             vertices.add(vertex);
             return true;
@@ -48,21 +48,24 @@ public class ConcreteEdgesGraph implements Graph<String> {
     }
 
     @Override
-    public int set(String source, String target, int weight) {
-        Edge instance = new Edge(source, target, weight);
+    public int set(L source, L target, int weight) {
+        Edge instance;
         int lastWeight = 0; // this variable is to store the previous edge weight of the changed edge
         // to search if the input edge is in edges
         for (Edge edge : edges) {
-            if (edge.equal(instance)) {
+            if (edge.sameVertex(source, target)) {
                 lastWeight = edge.getWeight();
                 edges.remove(edge);
-                if (weight != 0)
+                if (weight != 0) {
+                    instance = new Edge(source, target, weight);
                     edges.add(instance);
+                }
                 return lastWeight;
             }
         }
         // the input edge is not in edges case
         if (weight != 0) {
+            instance = new Edge(source, target, weight);
             vertices.add(source);
             vertices.add(target);
             edges.add(instance);
@@ -71,7 +74,7 @@ public class ConcreteEdgesGraph implements Graph<String> {
     }
 
     @Override
-    public boolean remove(String vertex) {
+    public boolean remove(L vertex) {
         if (!vertices.contains(vertex))
             return false;
         ListIterator<Edge> iterator = edges.listIterator();
@@ -81,8 +84,8 @@ public class ConcreteEdgesGraph implements Graph<String> {
                 iterator.remove();
             }
         }
-        // search for the specific String object to remove it
-        for (String i : vertices) {
+        // search for the specific L object to remove it
+        for (L i : vertices) {
             if (i.equals(vertex))
                 vertices.remove(i);
         }
@@ -90,25 +93,25 @@ public class ConcreteEdgesGraph implements Graph<String> {
     }
 
     @Override
-    public Set<String> vertices() {
+    public Set<L> vertices() {
         return vertices;
     }
 
     @Override
-    public Map<String, Integer> sources(String target) {
-        Map<String, Integer> sources = new HashMap<>();
+    public Map<L, Integer> sources(L target) {
+        Map<L, Integer> sources = new HashMap<>();
         for (Edge edge : edges)
             if (target.equals(edge.getTarget()))
-                sources.put(edge.getSource(), edge.getWeight());
+                sources.put((L) edge.getSource(), edge.getWeight());
         return sources;
     }
 
     @Override
-    public Map<String, Integer> targets(String source) {
-        Map<String, Integer> targets = new HashMap<>();
+    public Map<L, Integer> targets(L source) {
+        Map<L, Integer> targets = new HashMap<>();
         for (Edge edge : edges)
             if (edge.getSource().equals(source))
-                targets.put(edge.getTarget(), edge.getWeight());
+                targets.put((L) edge.getTarget(), edge.getWeight());
         return targets;
     }
 
@@ -126,15 +129,15 @@ public class ConcreteEdgesGraph implements Graph<String> {
  * <p>PS2 instructions: the specification and implementation of this class is
  * up to you.
  */
-class Edge {
+class Edge<L> {
 
-    private String source, target;
+    private L source, target;
     private int weight;
 
     // Abstraction function:
     /*
-     * the source String means the start vertex of the edge,
-     * and the target String means the end vertex of the edge,
+     * the source L means the start vertex of the edge,
+     * and the target L means the end vertex of the edge,
      * the integer weight means the weight of the edge
      */
     // Representation invariant:
@@ -142,8 +145,7 @@ class Edge {
     // Safety from rep exposure:
     // make the source ,target,weight private and final,don't provide method to modify them
 
-    Edge(String source, String target, int weight) {
-        checkRep();
+    Edge(L source, L target, int weight) {
         this.source = source;
         this.target = target;
         this.weight = weight;
@@ -151,23 +153,26 @@ class Edge {
     }
 
     private void checkRep() {
-        assert (!source.equals(target));
+        assert (!this.source.equals(this.target));
         assert (weight > 0);
     }
 
-    boolean equal(Edge obj) {
-        return this.source.equals(obj.getSource()) && this.target.equals(obj.getTarget());
+    boolean sameVertex(L source, L target) {
+        return this.source.equals(source) && this.target.equals(target);
     }
 
-    String getSource() {
+    L getSource() {
+        checkRep();
         return source;
     }
 
-    String getTarget() {
+    L getTarget() {
+        checkRep();
         return target;
     }
 
     int getWeight() {
+        checkRep();
         return weight;
     }
 
