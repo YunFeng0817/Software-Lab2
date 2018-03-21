@@ -121,9 +121,11 @@ public class GraphPoet {
     }
 
     public String getBridge(String source, String target) {
+        source = source.toLowerCase();
+        target = target.toLowerCase();
         Map<String, Integer> bridges = new HashMap<>();
-        Map<String, Integer> middleTargets = new HashMap<>();
-        Map<String, Integer> finalTargets = new HashMap<>();
+        Map<String, Integer> middleTargets;
+        Map<String, Integer> finalTargets;
         middleTargets = graph.targets(source);
         for (Map.Entry<String, Integer> entry : middleTargets.entrySet()) {
             finalTargets = graph.targets(entry.getKey());

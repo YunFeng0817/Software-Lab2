@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Tests for GraphPoet.
@@ -37,12 +38,8 @@ public class GraphPoetTest {
     GraphPoet data;
 
     @Before
-    public void before() throws Exception {
-        try {
-            data = new GraphPoet(file);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void before() throws IOException {
+        data = new GraphPoet(file);
     }
 
     @Test
