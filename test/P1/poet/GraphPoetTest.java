@@ -47,10 +47,10 @@ public class GraphPoetTest {
         assertEquals("Seek to explore strange new life and exciting synergies!", data.poem("Seek to explore new and exciting synergies!"));
     }
 
-    @Test
-    public void testGetBrigde() {
-        assertEquals("strange", data.getBridge("explore", "new"));
-        assertEquals("life", data.getBridge("new", "and"));
-    }
+//    @Test
+//    public void testGetBrigde() {
+//        assertEquals("strange", data.getBridge("explore", "new"));
+//        assertEquals("life", data.getBridge("new", "and"));
+//    }
 
 }

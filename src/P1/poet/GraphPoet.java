@@ -57,15 +57,25 @@ public class GraphPoet {
 
     private final Graph<String> graph = Graph.empty();
 
-    // Abstraction function:
-    //   TODO
-    // Representation invariant:
-    //   TODO
-    // Safety from rep exposure:
-    //   TODO
+    /* Abstraction function:
+     * the instance: graph store the data of the corpus of text,
+     * the vertices in the graph are words in the text,the edge is the
+     * the number of times "w1" is followed by
+     * "w2" in the corpus is the weight of the edge from w1 to w2.
+     */
+
+    /* Representation invariant:
+     * the vertices in the graph can't be empty, space or newline characters
+     * the vertices in the graph must be lowercase for my implement
+     */
+
+    /* Safety from rep exposure:
+     * set the graph private,and don't provide public mutable functions  to the clients
+     */
 
     /**
      * Create a new poet with the graph from corpus (as described above).
+     * vertices
      *
      * @param corpus text file from which to derive the poet's affinity graph
      * @throws IOException if the corpus file cannot be found or read
@@ -83,9 +93,21 @@ public class GraphPoet {
                 }
             }
         }
+        checkRep();
     }
 
-    // TODO checkRep
+    private void checkRep() {
+        for (String vertex : graph.vertices()) {
+            int i = 0;
+            assert (!vertex.equals(""));
+            assert (!vertex.equals(" "));
+            assert (!vertex.equals("\n"));
+            while (i < vertex.length()) {
+                assert (!Character.isUpperCase(i));
+                i++;
+            }
+        }
+    }
 
     /**
      * Generate a poem.
@@ -117,10 +139,18 @@ public class GraphPoet {
         for (String words : inputWords) {
             result += words + " ";
         }
+        checkRep();
         return result.substring(0, result.length() - 1);
     }
 
-    public String getBridge(String source, String target) {
+    /**
+     * this function is to search the bridge word according to the given two words in the graph
+     *
+     * @param source : the source vertex of the edge, 'source' is followed by 'target'
+     * @param target : the target vertex of the edge
+     * @return if the bridge is existed,return the bridge word, "" is returned otherwise
+     */
+    private String getBridge(String source, String target) {
         source = source.toLowerCase();
         target = target.toLowerCase();
         Map<String, Integer> bridges = new HashMap<>();
@@ -139,9 +169,12 @@ public class GraphPoet {
         sortedBridges.sort((Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) -> o2.getValue().compareTo(o1.getValue()));
         if (!sortedBridges.isEmpty())
             return sortedBridges.get(0).getKey();
+        checkRep();
         return "";
     }
 
-    // TODO toString()
-
+    @Override
+    public String toString() {
+        return "This is the instance of GraphPoet, hashcode: " + this.hashCode();
+    }
 }
