@@ -2,8 +2,10 @@ package P2;
 
 import P1.graph.*;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Set;
 
 public class FriendshipGraph {
 
@@ -36,9 +38,7 @@ public class FriendshipGraph {
      * @param newPerson the person of the new one
      */
     public void addVertex(Person newPerson) {
-        if (graph.add(newPerson)) {
-            this.personNum++;
-        }
+        graph.add(newPerson);
     }
 
     /**
@@ -62,30 +62,24 @@ public class FriendshipGraph {
         if (personA == personB)
             return 0;
         Queue<Person> BSQueue = new LinkedList<>();  // record the persons' id to be visit
-        boolean[] visited = new boolean[this.personNum]; // record every person if has been visited
-        for (int i = 1; i < this.personNum; i++) {
-            visited[i] = false;
-        }
+        Set<Person> visited = new HashSet<>(); // record every person if has been visited
         BSQueue.offer(personA);
-        visited[0] = true;
+        visited.add(personA);
         /* record the begin(front) id and the end(rear) id of each BS floor */
-        int count = 1, front = BSQueue.element(), rear = BSQueue.element();
+        Person front = BSQueue.element(), rear = BSQueue.element();
+        int count = 1;
         while (!BSQueue.isEmpty()) {
-            for (int i = 0; i < this.personNum; i++) {
-                if (Graph.get(BSQueue.element()).get(i).equals(true)) {
-                    if (i == personB.getId()) {
-                        return count;
-                    }
-                    if (!visited[i]) {
-                        front = i;
-                        visited[i] = true;
-                        BSQueue.offer(i);
-                    }
+            for (Person item : graph.targets(BSQueue.element()).keySet()) {
+                if (item.equals(personB))
+                    return count;
+                if (!visited.contains(item)) {
+                    BSQueue.offer(item);
+                    visited.add(item);
+                    front = item;
                 }
             }
-
             /* judge if one BS floor has been visited */
-            if (BSQueue.poll() == rear) {
+            if (BSQueue.poll().equals(rear)) {
                 count++;
                 rear = front;
             }
