@@ -9,8 +9,24 @@ import java.util.Set;
 
 public class FriendshipGraph {
 
+    /* abstraction function
+     * the graph is the represent of friendshipGraph
+     * the vertex in the graph is one person
+     * the edge in the graph means the two people is friend
+     * the graph's edge is directive ,so if two people are friends,the edge must point to each other
+     */
+
+    /* rep invariant
+     * the person in the graph can't have the same name
+     * the weight of the graph can't have weight more than 1
+     * the two people must have edge point to each other
+     * since this rep invariant is also in Graph,so this class will have the same checkRep function in the Graph
+     */
+
+    // Safety from rep exposure:
+    // set the graph be private,and set the person class friendly,it can't be access outside the package
+
     private Graph<Person> graph = Graph.empty();
-    private int personNum;
 
     public static void main(String[] argv) {
         FriendshipGraph graph = new FriendshipGraph();
@@ -59,7 +75,7 @@ public class FriendshipGraph {
      * @return the value of the distance
      */
     public int getDistance(Person personA, Person personB) {
-        if (personA == personB)
+        if (personA.equals(personB))
             return 0;
         Queue<Person> BSQueue = new LinkedList<>();  // record the persons' id to be visit
         Set<Person> visited = new HashSet<>(); // record every person if has been visited
@@ -86,5 +102,4 @@ public class FriendshipGraph {
         }
         return -1;
     }
-
 }

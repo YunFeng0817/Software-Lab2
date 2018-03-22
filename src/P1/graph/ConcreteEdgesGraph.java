@@ -185,6 +185,6 @@ class Edge<L> {
 
     @Override
     public String toString() {
-        return "the source vertex is " + source.toString() + " the target vertex is " + target.toString() + " ,the weight is " + weight;
+        return "the source vertex is " + source + " the target vertex is " + target + " ,the weight is " + weight;
     }
 }

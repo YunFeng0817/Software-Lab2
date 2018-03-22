@@ -34,6 +34,10 @@ public class FriendshipGraphTest {
     public void testAddVertex() throws Exception {
         /*
          * test case one
+         * test strategy:
+         * this test case add 1000 persons to the graph,
+         * and add 1000 edges ,the edges are regular
+         * try to get distance between every two persons
          */
         for (int i = 0; i < 1000; i++) {
             persons[i] = new Person(String.valueOf(i));
@@ -45,6 +49,10 @@ public class FriendshipGraphTest {
 
         /*
          * test case two
+         * test strategy
+         * read data from file to avoid add them in my code
+         * person : persons have different name, persons have the same name
+         * getDistance: distance=-1, distance=0 ,distance >= 1
          */
         for (int i = 0; i < 14; i++) {
             persons1[i] = new Person(String.valueOf((int) 'a' + i));
@@ -60,6 +68,10 @@ public class FriendshipGraphTest {
         testAddVertex();
         /*
          * test case one
+         * test strategy:
+         * this test case add 1000 persons to the graph,
+         * and add 1000 edges ,the edges are regular
+         * try to get distance between every two persons
          */
         for (int i = 0; i < 999; i++) {
             graphTest.addEdge(persons[i], persons[i + 1]);
@@ -71,7 +83,10 @@ public class FriendshipGraphTest {
 
         /*
          * test case two
+         * test strategy
          * read data from file to avoid add them in my code
+         * person : persons have different name, persons have the same name
+         * getDistance: distance=-1, distance=0 ,distance >= 1
          */
         BufferedReader content = new BufferedReader(new FileReader("./test/P2/edge.txt"));
         String line;
