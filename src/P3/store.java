@@ -2,7 +2,7 @@ package P3;
 
 import java.util.*;
 
-public class store {
+class store {
     Map<Stop, Map<String, List<Integer>>> data = new HashMap<>();
 
     void setData(Stop stop, String route, int time) {

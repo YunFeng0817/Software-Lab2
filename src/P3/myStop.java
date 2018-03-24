@@ -1,17 +1,23 @@
 package P3;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+/**
+ * one implement of the interface Stop
+ */
 public class myStop implements Stop {
     private final String name;
     private final double latitude, longitude;
 
-    myStop(String name, double latitude, double lontitude) {
+    /**
+     * Constructor
+     *
+     * @param name      the name of this bus stop
+     * @param latitude  the latitude value of this bus stop
+     * @param longitude the longitude value of this bus stop
+     */
+    myStop(String name, double latitude, double longitude) {
         this.name = name;
         this.latitude = latitude;
-        this.longitude = lontitude;
+        this.longitude = longitude;
     }
 
     @Override
@@ -34,13 +40,15 @@ public class myStop implements Stop {
         return name.hashCode();
     }
 
+    /**
+     * if the rep in the instance are the same,the equals() should return true
+     *
+     * @param obj any one of object
+     * @return if two object are point to the same instance or the rep in the instance are the same,return true, false otherwise
+     */
     @Override
     public boolean equals(Object obj) {
-        if (obj == this)
-            return true;
-        if (obj instanceof Stop)
-            return name.equals(((Stop) obj).getName());
-        return false;
+        return obj == this || obj instanceof Stop && name.equals(((Stop) obj).getName());
     }
 }
 
