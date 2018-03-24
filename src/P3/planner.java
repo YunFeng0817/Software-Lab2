@@ -1,13 +1,18 @@
 package P3;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import P1.graph.*;
 
 public class planner implements RoutePlanner {
-    private Graph<Stop> graph = Graph.empty();
+    private Graph<StopEvent> graph;
+    private Set<Stop> stops;
 
-    planner() {
+    planner(Graph<StopEvent> graph, Set<Stop> stops) {
+        this.graph = graph;
+        this.stops = stops;
     }
 
     @Override

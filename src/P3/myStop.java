@@ -5,9 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 public class myStop implements Stop {
-    private String name;
-    private double latitude, longitude;
-    private Map<String, List<Double>> routes = new HashMap<>();
+    private final String name;
+    private final double latitude, longitude;
 
     myStop(String name, double latitude, double lontitude) {
         this.name = name;
@@ -28,11 +27,6 @@ public class myStop implements Stop {
     @Override
     public double getLongitude() {
         return longitude;
-    }
-
-    public boolean setRoute(String routeName, double time) {
-
-        return true;
     }
 }
 
