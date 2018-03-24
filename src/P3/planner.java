@@ -1,8 +1,9 @@
 package P3;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.regex.*;
 
 import P1.graph.*;
 
@@ -17,7 +18,15 @@ public class planner implements RoutePlanner {
 
     @Override
     public List<Stop> findStopsBySubstring(String search) {
-        return null;
+        List<Stop> foundStops = new ArrayList<>();
+        Pattern rule = Pattern.compile("*" + search + "*");
+        Matcher matcher;
+        for (Stop item : stops) {
+            matcher = rule.matcher(item.getName());
+            if (matcher.find())
+                foundStops.add(item);
+        }
+        return foundStops;
     }
 
     @Override

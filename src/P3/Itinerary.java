@@ -1,27 +1,36 @@
 package P3;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Itinerary {
+    List<TripSegment> trip = new LinkedList<>();
+
+    void add(TripSegment segment) {
+        trip.add(segment);
+    }
+
     int getStartTime() {
-        return 0;
+        return trip.get(trip.size() - 1).getStart().getTime();
     }
 
     int getEndTime() {
-        return 0;
+        return trip.get(0).getEnd().getTime();
     }
 
     int getWaitTime() {
-        return 0;
+        return trip.stream().filter(item -> item instanceof WaitSegment).mapToInt(item -> item.getEnd().getTime() - item.getStart().getTime()).sum();
     }
 
     Stop getStartLocation() {
-        throw new RuntimeException("Implemented me!");
+        return trip.get(trip.size() - 1).getStart().getLocation();
     }
 
     Stop getEndLocation() {
-        throw new RuntimeException("Implemented me!");
+        return trip.get(0).getEnd().getLocation();
     }
 
     String getInstructions() {
-        return "";
+        return trip.stream().map(Object::toString).reduce("", (pre, next) -> pre + next);
     }
 }
