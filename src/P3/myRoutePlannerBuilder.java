@@ -61,6 +61,6 @@ public class myRoutePlannerBuilder implements RoutePlannerBuilder {
                 }
             }
         }
-        return new planner(graph, stops);
+        return new planner(graph, stops, data);
     }
 }
