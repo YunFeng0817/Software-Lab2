@@ -11,6 +11,7 @@ public class myRoutePlannerBuilder implements RoutePlannerBuilder {
     @Override
     public RoutePlanner build(String filename, int maxWaitLimit) throws IOException {
         Set<Stop> stops = new HashSet<>();
+        store data = new store();
         FileReader file = new FileReader(filename);
         BufferedReader content = new BufferedReader(file);
         String line;
@@ -35,12 +36,20 @@ public class myRoutePlannerBuilder implements RoutePlannerBuilder {
                         graph.set(buffer, stopEvent, stopEvent.getTime() - buffer.getTime());
                     }
                     buffer = stopEvent;
+                    data.setData(stop, route, Integer.parseInt(words[3]));
                 } catch (IndexOutOfBoundsException e) {
                     System.out.println("the line of the records has wrong form!");
                     e.printStackTrace();
                 }
             }
         }
+//        Map<String, List<Integer>> buses;
+//        for (Stop item : stops) {
+//            buses = data.getBuses(item);
+//            for(Map.Entry<String,List<Integer>> entry:buses.entrySet()){
+//
+//            }
+//        }
         return new planner(graph, stops);
     }
 }
