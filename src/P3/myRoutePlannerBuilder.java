@@ -43,13 +43,24 @@ public class myRoutePlannerBuilder implements RoutePlannerBuilder {
                 }
             }
         }
-//        Map<String, List<Integer>> buses;
-//        for (Stop item : stops) {
-//            buses = data.getBuses(item);
-//            for(Map.Entry<String,List<Integer>> entry:buses.entrySet()){
-//
-//            }
-//        }
+        Map<String, List<Integer>> buses;
+        for (Stop stop : stops) {
+            buses = data.getBuses(stop);
+            for (Map.Entry<String, List<Integer>> entry : buses.entrySet()) {
+                entry.setValue(entry.getValue());
+                ListIterator<Integer> iterator = entry.getValue().listIterator();
+                while (iterator.hasNext()) {
+                    int bufferPre = iterator.next();
+                    if (iterator.hasNext()) {
+                        int bufferNext = iterator.next();
+                        iterator.previous();
+                        if (bufferNext - bufferPre <= 1200) {
+                            graph.set(new StopEvent(entry.getKey(), stop, bufferPre), new StopEvent(entry.getKey(), stop, bufferNext), bufferNext - bufferPre);
+                        }
+                    }
+                }
+            }
+        }
         return new planner(graph, stops);
     }
 }

@@ -22,4 +22,9 @@ public class StopEvent {
     Stop getLocation() {
         return location;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this == obj || ((StopEvent) obj).getRoute().equals(route) && ((StopEvent) obj).getTime() == time && ((StopEvent) obj).getLocation().equals(location);
+    }
 }
