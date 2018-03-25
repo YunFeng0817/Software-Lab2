@@ -36,31 +36,29 @@ public class myRoutePlannerBuilder implements RoutePlannerBuilder {
                         graph.set(buffer, stopEvent, stopEvent.getTime() - buffer.getTime());
                     }
                     buffer = stopEvent;
-                    data.setData(stop, route, Integer.parseInt(words[3]));
+                    data.setData(stop, stopEvent);
                 } catch (IndexOutOfBoundsException e) {
                     System.out.println("the line of the records has wrong form!");
                     e.printStackTrace();
                 }
             }
         }
-        Map<String, List<Integer>> buses;
+        List<StopEvent> buses;
         for (Stop stop : stops) {
             buses = data.getBuses(stop);
-            for (Map.Entry<String, List<Integer>> entry : buses.entrySet()) {
-                entry.setValue(entry.getValue());
-                ListIterator<Integer> iterator = entry.getValue().listIterator();
-                while (iterator.hasNext()) {
-                    int bufferPre = iterator.next();
-                    if (iterator.hasNext()) {
-                        int bufferNext = iterator.next();
-                        iterator.previous();
-                        if (bufferNext - bufferPre <= maxWaitLimit) {
-                            graph.set(new StopEvent(entry.getKey(), stop, bufferPre), new StopEvent(entry.getKey(), stop, bufferNext), bufferNext - bufferPre);
-                        }
+            buses.sort(Comparator.comparingInt(StopEvent::getTime));
+            ListIterator<StopEvent> iterator = buses.listIterator();
+            while (iterator.hasNext()) {
+                StopEvent bufferPre = iterator.next();
+                if (iterator.hasNext()) {
+                    StopEvent bufferNext = iterator.next();
+                    iterator.previous();
+                    if (bufferNext.getTime() - bufferPre.getTime() <= maxWaitLimit) {
+                        graph.set(bufferPre, bufferNext, bufferNext.getTime() - bufferPre.getTime());
                     }
                 }
             }
         }
-        return new planner(graph, stops, data,maxWaitLimit);
+        return new planner(graph, stops, data, maxWaitLimit);
     }
 }

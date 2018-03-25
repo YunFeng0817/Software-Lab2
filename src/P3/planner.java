@@ -38,16 +38,10 @@ public class planner implements RoutePlanner {
 
     @Override
     public Itinerary computeRoute(Stop src, Stop dest, int time) {
-        // add  the user's location point to the graph ,and set the relative edge
-        startEvent = new StopEvent(src, time);
-        for (Map.Entry<String, List<Integer>> entry : data.getBuses(src).entrySet()) {
-            int latest = entry.getValue().stream().filter(item -> item - time <= maxWaitLimit && item - time >= 0).findFirst().orElse(-1);
-            if (latest != -1) {
-                StopEvent startBusEvent = new StopEvent(entry.getKey(), src, latest);
-                graph.set(startEvent, startBusEvent, latest - time);
-            }
+        StopEvent startEvent = data.getBuses(src).stream().filter(item -> item.getTime() - time <= maxWaitLimit && item.getTime() - time >= 0).min(Comparator.comparingInt(StopEvent::getTime)).orElse(null);
+        if (startEvent == null) {
+            System.out.println("the ride can't ride a bus in max wait time (" + maxWaitLimit + "s)");
         }
-        graph.set(startEvent, startEvent, 0);
         dijkstra();
         Map.Entry<StopEvent, Integer> min = distance.entrySet().stream().filter(item -> item.getKey().getLocation().equals(dest)).min(Comparator.comparing(Map.Entry::getValue)).orElse(null);
         Itinerary trip = new Itinerary();
@@ -77,6 +71,7 @@ public class planner implements RoutePlanner {
             distance.put(stopEvent, targets.keySet().contains(stopEvent) ? targets.get(stopEvent) : infinite);
             trace.put(stopEvent, stopEvent);
         }
+        distance.put(startEvent, 0);
         for (int i = 1; i <= stops.size(); i++) {
             Map.Entry<StopEvent, Integer> min = distance.entrySet().stream().min(Comparator.comparing(Map.Entry::getValue)).orElse(null);
             if (min != null) {
