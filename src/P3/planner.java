@@ -14,7 +14,7 @@ public class planner implements RoutePlanner {
     private Map<StopEvent, StopEvent> trace = new HashMap<>();
     private Map<StopEvent, Integer> distance = new HashMap<>();
     private StopEvent startEvent;
-    final int infinite = 0x00ffffff;
+    private final int infinite = 0x00ffffff;
 
     planner(Graph<StopEvent> graph, Set<Stop> stops, store data, int maxWaitLimit) {
         this.graph = graph;
@@ -38,7 +38,7 @@ public class planner implements RoutePlanner {
 
     @Override
     public Itinerary computeRoute(Stop src, Stop dest, int time) {
-        StopEvent startEvent = data.getBuses(src).stream().filter(item -> item.getTime() - time <= maxWaitLimit && item.getTime() - time >= 0).min(Comparator.comparingInt(StopEvent::getTime)).orElse(null);
+        startEvent = data.getBuses(src).stream().filter(item -> item.getTime() - time <= maxWaitLimit && item.getTime() - time >= 0).min(Comparator.comparingInt(StopEvent::getTime)).orElse(null);
         if (startEvent == null) {
             System.out.println("the ride can't ride a bus in max wait time (" + maxWaitLimit + "s)");
         }
@@ -58,6 +58,7 @@ public class planner implements RoutePlanner {
                 }
                 buffer = traceNode;
             }
+            trip.add(new WaitSegment(new StopEvent(dest, time), startEvent, startEvent.getTime() - time));
         }
         return trip;
     }
