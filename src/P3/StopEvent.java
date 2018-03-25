@@ -11,6 +11,12 @@ public class StopEvent {
         this.time = time;
     }
 
+    StopEvent(Stop location, int time) {
+        this.route = "";
+        this.location = location;
+        this.time = time;
+    }
+
     String getRoute() {
         return route;
     }

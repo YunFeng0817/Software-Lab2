@@ -54,13 +54,13 @@ public class myRoutePlannerBuilder implements RoutePlannerBuilder {
                     if (iterator.hasNext()) {
                         int bufferNext = iterator.next();
                         iterator.previous();
-                        if (bufferNext - bufferPre <= 1200) {
+                        if (bufferNext - bufferPre <= maxWaitLimit) {
                             graph.set(new StopEvent(entry.getKey(), stop, bufferPre), new StopEvent(entry.getKey(), stop, bufferNext), bufferNext - bufferPre);
                         }
                     }
                 }
             }
         }
-        return new planner(graph, stops, data);
+        return new planner(graph, stops, data,maxWaitLimit);
     }
 }
