@@ -26,7 +26,8 @@ public class planner implements RoutePlanner {
     @Override
     public List<Stop> findStopsBySubstring(String search) {
         List<Stop> foundStops = new ArrayList<>();
-        Pattern rule = Pattern.compile("*" + search + "*");
+        // case insensitive
+        Pattern rule = Pattern.compile(".*" + search + ".*", Pattern.CASE_INSENSITIVE);
         Matcher matcher;
         for (Stop item : stops) {
             matcher = rule.matcher(item.getName());
