@@ -1,10 +1,23 @@
 package P3.Stop;
 
-import P3.Stop.Stop;
+/* abstract function
+ * AF(name)->the name of the bus stop
+ * AF(latitude) -> the latitude value of the stop
+ * AF(longitude) -> the longitude of the stop
+ */
+
+/* rep invariant
+ * the name  can't be null
+ */
+
+/* safety from rep exposure
+ * all rep are private , no return mutable rep methods
+ */
 
 /**
  * one implement of the interface Stop
  */
+// this class is immutable
 public class myStop implements Stop {
     private final String name;
     private final double latitude, longitude;

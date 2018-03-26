@@ -12,6 +12,21 @@ import java.io.IOException;
 import java.io.*;
 import java.util.*;
 
+
+/* abstract function
+ * stops->the set of all bus stop
+ * data-> the map relation between stop and route status
+ * file -> the file name which has transit data
+ */
+
+/* rep invariant
+ * true
+ */
+
+/* safety from rep exposure
+ * all rep are private , no return rep methods
+ */
+
 public class myRoutePlannerBuilder implements RoutePlannerBuilder {
 
     @Override
@@ -23,6 +38,7 @@ public class myRoutePlannerBuilder implements RoutePlannerBuilder {
         String line;
         String[] words;
         Graph<StopEvent> graph = Graph.empty();
+        // read and parse data from the file
         while ((line = content.readLine()) != null) {
             words = line.split(",");
             String route = words[0];
@@ -33,6 +49,7 @@ public class myRoutePlannerBuilder implements RoutePlannerBuilder {
                     throw new RuntimeException("the file form error,can't parse it");
                 }
                 words = line.split(",");
+                // add edge at one bus route
                 try {
                     Stop stop = new myStop(words[0], Double.parseDouble(words[1]), Double.parseDouble(words[2]));
                     StopEvent stopEvent = new StopEvent(route, stop, Integer.parseInt(words[3]));
@@ -50,6 +67,9 @@ public class myRoutePlannerBuilder implements RoutePlannerBuilder {
             }
         }
         List<StopEvent> buses;
+        // add edge to the graph
+        // set edge between one stop but different arrival time stop event
+        // the data is in data rep
         for (Stop stop : stops) {
             buses = data.getBuses(stop);
             buses.sort(Comparator.comparingInt(StopEvent::getTime));

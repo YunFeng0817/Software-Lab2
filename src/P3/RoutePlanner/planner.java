@@ -9,12 +9,27 @@ import P3.Stop.Stop;
 import P3.Stop.StopEvent;
 import P3.TripSegment.*;
 
+/* abstract function
+ * graph -> one map which store the stop status(stop event) ,and the relation between stop status(stop event)
+ * stops -> the set of all bus stop
+ * data-> the map relation between stop and route status
+ * distance -> the map between stop status(stop event) to the  using time from the start stop status(stop event) to the rest stop status(stop event)
+ * trace -> contain the fasted route from the start stopEvent to every other stopEvent
+ */
+
+/* rep invariant
+ * true
+ */
+
+/* safety from rep exposure
+ * all rep are private , no return rep methods
+ */
+
 public class planner implements RoutePlanner {
     private Graph<StopEvent> graph;
     private Set<Stop> stops;
     private store data = new store();
     private int maxWaitLimit;
-    private Set<StopEvent> visited;
     private Map<StopEvent, StopEvent> trace;
     private Map<StopEvent, Integer> distance;
     private StopEvent startEvent;
@@ -43,11 +58,18 @@ public class planner implements RoutePlanner {
 
     @Override
     public Itinerary computeRoute(Stop src, Stop dest, int time) {
+        // search the latest stopEvent point to be  the searching start point
         startEvent = data.getBuses(src).stream().filter(item -> item.getTime() - time <= maxWaitLimit && item.getTime() - time >= 0).min(Comparator.comparingInt(StopEvent::getTime)).orElse(null);
         if (startEvent == null) {
             System.out.println("the rider can't ride a bus in max wait time (" + maxWaitLimit + "s)");
         }
+
         dijkstra();
+
+        /*
+         * generate the trip segment according to the dijkstra result
+         */
+        // the blow long line is to get the least time using stopEvent from destination stop
         Map.Entry<StopEvent, Integer> min = distance.entrySet().stream().filter(item -> item.getKey().getLocation().equals(dest)).min(Comparator.comparing(Map.Entry::getValue)).orElse(null);
         Itinerary trip = new Itinerary();
         if (min != null && min.getValue() != infinite) {
@@ -69,13 +91,15 @@ public class planner implements RoutePlanner {
                 buffer = traceNode;
             } while (!traceNode.equals(startEvent));
             trip.add(new WaitSegment(new StopEvent(src, time), startEvent, startEvent.getTime() - time));
+        } else {
+            System.err.println("the rider can't ride a bus to the destination within the max wait time" + maxWaitLimit + "s ");
         }
         return trip;
     }
 
     private void dijkstra() {
         int sum;
-        visited = new HashSet<>();
+        Set<StopEvent> visited = new HashSet<>();
         trace = new HashMap<>();
         distance = new HashMap<>();
         visited.add(startEvent);

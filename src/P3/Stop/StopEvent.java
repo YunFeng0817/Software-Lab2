@@ -1,5 +1,19 @@
 package P3.Stop;
 
+/* abstract function
+ * route-> the name of the route name
+ * time -> the specific time ,one event occur,such as the bus arrive this stop
+ * location -> the location of the bus stop
+ */
+
+/* rep invariant
+ * the location can't be null
+ */
+
+/* safety from rep exposure
+ * all rep are private , no return mutable rep methods
+ */
+// this class is immutable
 public class StopEvent {
     private final String route;
     private final int time;
