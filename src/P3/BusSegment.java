@@ -24,7 +24,11 @@ public class BusSegment implements TripSegment {
 
     @Override
     public String toString() {
-        return "ride the bus message: " + start.getLocation().toString() + " , at time : " + start.getTime() +
-                " . through time : " + passTime + "s , to " + end.getLocation().toString() + " , at time : " + end.getTime() + "\n";
+        return "ride the bus " + start.getRoute() + " message:"
+                + start.getLocation().toString() + ", at time:"
+                + start.getTime() +
+                " . through time : " + passTime + "s , to "
+                + end.getLocation().toString() + " , at time : "
+                + end.getTime() + "\n";
     }
 }

@@ -64,7 +64,7 @@ public class planner implements RoutePlanner {
                 }
                 buffer = traceNode;
             } while (!traceNode.equals(startEvent));
-            trip.add(new WaitSegment(new StopEvent(dest, time), startEvent, startEvent.getTime() - time));
+            trip.add(new WaitSegment(new StopEvent(src, time), startEvent, startEvent.getTime() - time));
         }
         return trip;
     }
@@ -80,7 +80,7 @@ public class planner implements RoutePlanner {
         }
         distance.put(startEvent, 0);
         for (int i = 1; i <= stops.size(); i++) {
-            Map.Entry<StopEvent, Integer> min = distance.entrySet().stream().min(Comparator.comparing(Map.Entry::getValue)).orElse(null);
+            Map.Entry<StopEvent, Integer> min = distance.entrySet().stream().filter(item->!visited.contains(item.getKey())).min(Comparator.comparing(Map.Entry::getValue)).orElse(null);
             if (min != null) {
                 visited.add(min.getKey());
                 targets = graph.targets(min.getKey());
