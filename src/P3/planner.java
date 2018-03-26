@@ -10,9 +10,9 @@ public class planner implements RoutePlanner {
     private Set<Stop> stops;
     private store data = new store();
     private int maxWaitLimit;
-    private Set<StopEvent> visited = new HashSet<>();
-    private Map<StopEvent, StopEvent> trace = new HashMap<>();
-    private Map<StopEvent, Integer> distance = new HashMap<>();
+    private Set<StopEvent> visited;
+    private Map<StopEvent, StopEvent> trace;
+    private Map<StopEvent, Integer> distance;
     private StopEvent startEvent;
     private final int infinite = 0x00ffffff;
 
@@ -71,6 +71,9 @@ public class planner implements RoutePlanner {
 
     private void dijkstra() {
         int sum;
+        visited = new HashSet<>();
+        trace = new HashMap<>();
+        distance = new HashMap<>();
         visited.add(startEvent);
         Map<StopEvent, Integer> targets = graph.targets(startEvent);
         Set<StopEvent> stops = graph.vertices();
@@ -80,7 +83,7 @@ public class planner implements RoutePlanner {
         }
         distance.put(startEvent, 0);
         for (int i = 1; i <= stops.size(); i++) {
-            Map.Entry<StopEvent, Integer> min = distance.entrySet().stream().filter(item->!visited.contains(item.getKey())).min(Comparator.comparing(Map.Entry::getValue)).orElse(null);
+            Map.Entry<StopEvent, Integer> min = distance.entrySet().stream().filter(item -> !visited.contains(item.getKey())).min(Comparator.comparing(Map.Entry::getValue)).orElse(null);
             if (min != null) {
                 visited.add(min.getKey());
                 targets = graph.targets(min.getKey());

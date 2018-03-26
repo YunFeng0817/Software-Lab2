@@ -4,7 +4,6 @@ public class BusSegment implements TripSegment {
 
     private final StopEvent start, end;
     private final int passTime;
-    public final boolean wait = false;
 
     BusSegment(StopEvent start, StopEvent end, int passTime) {
         this.start = start;

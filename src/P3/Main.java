@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         RoutePlannerBuilder routeBuilder = new myRoutePlannerBuilder();
-        RoutePlanner planner = routeBuilder.build("./src/P3/largeData.txt", 1200);
+        RoutePlanner planner = routeBuilder.build("./src/P3/transit.txt", 1200);
         String choice = "";
         String content = "";
         while (!choice.equals("#")) {
@@ -17,6 +17,8 @@ public class Main {
             System.out.println(">>>if you want to exit the system,please input  #");
             Scanner in = new Scanner(System.in);
             choice = in.nextLine();
+            String words[];
+            Stop src, dest;
             if (choice.equals("1")) {
                 System.out.println(">>>input the name you want to search, I will show the stops contain the string ");
                 Scanner searchIn = new Scanner(System.in);
@@ -27,6 +29,13 @@ public class Main {
                 System.out.println("input stop name now, the stop name at destination and time now ,I will return the instruction about how to get there");
                 Scanner searchIn = new Scanner(System.in);
                 content = searchIn.nextLine();
+                words = content.split(" ");
+                src = planner.findStopsBySubstring(words[0]).stream().filter(item -> item.getName().equals(words[0])).findFirst().orElse(null);
+                dest = planner.findStopsBySubstring(words[1]).stream().filter(item -> item.getName().equals(words[1])).findFirst().orElse(null);
+                if (src != null && dest != null) {
+                    System.out.println(planner.computeRoute(src, dest, Integer.parseInt(words[2])).getInstructions());
+                } else
+                    System.err.println("can't find specific stop");
             } else if (!choice.equals("#")) {
                 System.err.println("no such instruction");
             }
