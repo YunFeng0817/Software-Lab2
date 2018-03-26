@@ -1,9 +1,13 @@
-package P3;
+package P3.RoutePlanner;
 
 import java.util.*;
 import java.util.regex.*;
 
 import P1.graph.*;
+import P3.*;
+import P3.Stop.Stop;
+import P3.Stop.StopEvent;
+import P3.TripSegment.*;
 
 public class planner implements RoutePlanner {
     private Graph<StopEvent> graph;
@@ -16,7 +20,7 @@ public class planner implements RoutePlanner {
     private StopEvent startEvent;
     private final int infinite = 0x00ffffff;
 
-    planner(Graph<StopEvent> graph, Set<Stop> stops, store data, int maxWaitLimit) {
+    public planner(Graph<StopEvent> graph, Set<Stop> stops, store data, int maxWaitLimit) {
         this.graph = graph;
         this.stops = stops;
         this.data = data;

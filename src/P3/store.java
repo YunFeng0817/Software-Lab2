@@ -1,11 +1,14 @@
 package P3;
 
+import P3.Stop.Stop;
+import P3.Stop.StopEvent;
+
 import java.util.*;
 
-class store {
+public class store {
     Map<Stop, List<StopEvent>> data = new HashMap<>();
 
-    void setData(Stop stop, StopEvent stopEvent) {
+    public void setData(Stop stop, StopEvent stopEvent) {
         List<StopEvent> busBuffer;
         if ((busBuffer = data.get(stop)) != null)
             busBuffer.add(stopEvent);
@@ -13,7 +16,7 @@ class store {
             data.put(stop, new ArrayList<>(Collections.singletonList(stopEvent)));
     }
 
-    List<StopEvent> getBuses(Stop stop) {
+    public List<StopEvent> getBuses(Stop stop) {
         return data.get(stop);
     }
 }

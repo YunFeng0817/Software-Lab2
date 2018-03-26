@@ -1,31 +1,31 @@
-package P3;
+package P3.Stop;
 
 public class StopEvent {
     private final String route;
     private final int time;
     private final Stop location;
 
-    StopEvent(String route, Stop location, int time) {
+    public StopEvent(String route, Stop location, int time) {
         this.route = route;
         this.location = location;
         this.time = time;
     }
 
-    StopEvent(Stop location, int time) {
+    public StopEvent(Stop location, int time) {
         this.route = "";
         this.location = location;
         this.time = time;
     }
 
-    String getRoute() {
+    public String getRoute() {
         return route;
     }
 
-    int getTime() {
+    public int getTime() {
         return time;
     }
 
-    Stop getLocation() {
+    public Stop getLocation() {
         return location;
     }
 

@@ -1,4 +1,6 @@
-package P3;
+package P3.Stop;
+
+import P3.Stop.Stop;
 
 /**
  * one implement of the interface Stop
@@ -14,7 +16,7 @@ public class myStop implements Stop {
      * @param latitude  the latitude value of this bus stop
      * @param longitude the longitude value of this bus stop
      */
-    myStop(String name, double latitude, double longitude) {
+    public myStop(String name, double latitude, double longitude) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;

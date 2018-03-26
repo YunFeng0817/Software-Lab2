@@ -26,7 +26,7 @@ public interface Graph<L> {
      * @return a new empty weighted directed graph
      */
     static <L> Graph<L> empty() {
-        return new ConcreteEdgesGraph<>();
+        return new ConcreteVerticesGraph<>();
     }
 
     /**

@@ -1,6 +1,12 @@
-package P3;
+package P3.RoutePlannerBuilder;
 
 import P1.graph.Graph;
+import P3.*;
+import P3.RoutePlanner.RoutePlanner;
+import P3.RoutePlanner.planner;
+import P3.Stop.Stop;
+import P3.Stop.StopEvent;
+import P3.Stop.myStop;
 
 import java.io.IOException;
 import java.io.*;

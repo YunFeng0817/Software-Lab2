@@ -20,10 +20,10 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
     // Representation invariant:
     /*
      * the vertex should be universe and not null,the weight of the edge must be positive,
-     * the two vertices of the edge should not be the same
      */
     // Safety from rep exposure:
     // make the rep be private and final ,don't provide public function to modify the value of these fields
+    // I don't return mutable rep, only return the clone data
 
     ConcreteEdgesGraph() {
     }

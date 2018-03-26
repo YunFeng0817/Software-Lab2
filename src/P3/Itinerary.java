@@ -1,13 +1,16 @@
 package P3;
 
+import P3.Stop.Stop;
+import P3.TripSegment.*;
+
 import java.util.LinkedList;
 import java.util.List;
 
 public class Itinerary {
     List<TripSegment> trip = new LinkedList<>();
 
-    void add(TripSegment segment) {
-        trip.add(0,segment);
+    public void add(TripSegment segment) {
+        trip.add(0, segment);
     }
 
     int getStartTime() {
@@ -15,7 +18,7 @@ public class Itinerary {
     }
 
     int getEndTime() {
-        return trip.get(trip.size()-1).getEnd().getTime();
+        return trip.get(trip.size() - 1).getEnd().getTime();
     }
 
     int getWaitTime() {

@@ -1,4 +1,7 @@
-package P3;
+package P3.RoutePlanner;
+
+import P3.Itinerary;
+import P3.Stop.Stop;
 
 import java.util.List;
 
