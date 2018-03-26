@@ -10,6 +10,8 @@ package P3.Stop;
  * the location can't be null
  */
 
+import P3.Itinerary;
+
 /* safety from rep exposure
  * all rep are private , no return mutable rep methods
  */
@@ -45,6 +47,6 @@ public class StopEvent {
 
     @Override
     public boolean equals(Object obj) {
-        return this == obj || ((StopEvent) obj).getRoute().equals(route) && ((StopEvent) obj).getTime() == time && ((StopEvent) obj).getLocation().equals(location);
+        return obj != null && (this == obj || ((StopEvent) obj).getRoute().equals(route) && ((StopEvent) obj).getTime() == time && ((StopEvent) obj).getLocation().equals(location));
     }
 }

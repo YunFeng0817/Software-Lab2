@@ -20,12 +20,10 @@ import P3.Stop.StopEvent;
 
 public class WaitSegment implements TripSegment {
     private final StopEvent start, end;
-    private final int passTime;
 
-    public WaitSegment(StopEvent start, StopEvent end, int passTime) {
+    public WaitSegment(StopEvent start, StopEvent end) {
         this.start = start;
         this.end = end;
-        this.passTime = passTime;
     }
 
     @Override
@@ -40,6 +38,6 @@ public class WaitSegment implements TripSegment {
 
     @Override
     public String toString() {
-        return "wait at stop : " + start.getLocation().getName() + " from " + start.getTime() + "s , wait " + passTime + "s " + "\n";
+        return "wait at stop : " + start.getLocation().getName() + " from " + start.getTime() + "s , wait " + (end.getTime() - start.getTime()) + "s " + "\n";
     }
 }

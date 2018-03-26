@@ -21,12 +21,10 @@ import P3.Stop.StopEvent;
 public class BusSegment implements TripSegment {
 
     private final StopEvent start, end;
-    private final int passTime;
 
-    public BusSegment(StopEvent start, StopEvent end, int passTime) {
+    public BusSegment(StopEvent start, StopEvent end) {
         this.start = start;
         this.end = end;
-        this.passTime = passTime;
     }
 
     @Override
@@ -44,7 +42,7 @@ public class BusSegment implements TripSegment {
         return "ride the bus " + start.getRoute() + " message:"
                 + start.getLocation().toString() + ", at time:"
                 + start.getTime() +
-                " . through time : " + passTime + "s , to "
+                " . through time : " + (end.getTime() - start.getTime()) + "s , to "
                 + end.getLocation().toString() + " , at time : "
                 + end.getTime() + "\n";
     }

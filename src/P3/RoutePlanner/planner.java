@@ -62,6 +62,7 @@ public class planner implements RoutePlanner {
         startEvent = data.getBuses(src).stream().filter(item -> item.getTime() - time <= maxWaitLimit && item.getTime() - time >= 0).min(Comparator.comparingInt(StopEvent::getTime)).orElse(null);
         if (startEvent == null) {
             System.out.println("the rider can't ride a bus in max wait time (" + maxWaitLimit + "s)");
+            return new Itinerary();
         }
 
         dijkstra();
@@ -83,16 +84,16 @@ public class planner implements RoutePlanner {
                     }
                     TripSegment segment;
                     if (buffer.getLocation().equals(traceNode.getLocation()))
-                        segment = new WaitSegment(traceNode, buffer, buffer.getTime() - traceNode.getTime());
+                        segment = new WaitSegment(traceNode, buffer);
                     else
-                        segment = new BusSegment(traceNode, buffer, buffer.getTime() - traceNode.getTime());
+                        segment = new BusSegment(traceNode, buffer);
                     trip.add(segment);
                 }
                 buffer = traceNode;
             } while (!traceNode.equals(startEvent));
-            trip.add(new WaitSegment(new StopEvent(src, time), startEvent, startEvent.getTime() - time));
+            trip.add(new WaitSegment(new StopEvent(src, time), startEvent));
         } else {
-            System.err.println("the rider can't ride a bus to the destination within the max wait time" + maxWaitLimit + "s ");
+            System.out.println("the rider can't ride a bus to the destination within the max wait time" + maxWaitLimit + "s ");
         }
         return trip;
     }

@@ -68,7 +68,7 @@ public class myStop implements Stop {
 
     @Override
     public String toString() {
-        return "stop name: " + name + " ,Latitude:" + longitude + " latitude: " + latitude + " ";
+        return "stop name: " + name + " ,Longitude:" + longitude + " Latitude: " + latitude + " ";
     }
 }
 

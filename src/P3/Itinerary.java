@@ -77,6 +77,14 @@ public class Itinerary {
      * @return instruction about how one rider can get to the destination as fast as possible
      */
     String getInstructions() {
-        return trip.stream().map(Object::toString).reduce("", (pre, next) -> pre + next);
+        if (trip.size() != 0)
+            return trip.stream().map(Object::toString).reduce("", (pre, next) -> pre + next);
+        else
+            return "the rider can't ride a bus in max wait time";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj == this || ((Itinerary) obj).getInstructions().equals(this.getInstructions());
     }
 }

@@ -44,7 +44,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
         }
         Vertex newVertex = new Vertex(vertex);
         vertices.add(newVertex);
-        checkRep();
+//        checkRep();
         return true;
     }
 
@@ -71,7 +71,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
                     lastWeight = vertex.removeInEdge(source);
             }
         }
-        checkRep();
+//        checkRep();
         return lastWeight;
     }
 
@@ -91,7 +91,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
                 item.removeInEdge(vertex);
             }
         }
-        checkRep();
+//        checkRep();
         return true;
     }
 
@@ -101,7 +101,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
         for (Vertex vertex : this.vertices) {
             vertices.add((L) vertex.getLabel());
         }
-        checkRep();
+//        checkRep();
         return new HashSet<>(vertices);
     }
 
@@ -110,7 +110,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
         for (Vertex vertex : vertices)
             if (vertex.getLabel().equals(target))
                 return new HashMap<>(vertex.getSources());
-        checkRep();
+//        checkRep();
         return new HashMap<>();
     }
 
@@ -119,7 +119,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
         for (Vertex vertex : vertices)
             if (vertex.getLabel().equals(source))
                 return new HashMap<>(vertex.getTargets());
-        checkRep();
+//        checkRep();
         return new HashMap<>();
     }
 
