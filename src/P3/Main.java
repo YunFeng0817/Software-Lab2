@@ -14,7 +14,7 @@ public class Main {
         RoutePlannerBuilder routeBuilder = new myRoutePlannerBuilder();
         RoutePlanner planner = routeBuilder.build("./src/P3/transit.txt", 1200);
         String choice = "";
-        String content = "";
+        String content;
         while (!choice.equals("#")) {
             System.out.println("input the choice number to execute the specific instruction");
             System.out.println(">>>1.input the name you want to search, I will show the stops contain the string ");

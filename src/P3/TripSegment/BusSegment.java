@@ -2,6 +2,22 @@ package P3.TripSegment;
 
 import P3.Stop.StopEvent;
 
+/* abstract function
+ * AF(start)->the start stop status(stop event) of this bus trip segment
+ * AF(end) ->the end stop status(stop event) of this bus trip segment
+ * AF(passTime) -> the time of this bus trip segment spend
+ */
+
+/* rep invariant
+ * the start and the end rep can't be null
+ */
+
+/* safety from rep exposure
+ * all rep are private , no return mutable rep methods
+ */
+
+// this class is immutable
+
 public class BusSegment implements TripSegment {
 
     private final StopEvent start, end;
