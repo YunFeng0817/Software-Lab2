@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         RoutePlannerBuilder routeBuilder = new myRoutePlannerBuilder();
-        RoutePlanner planner = routeBuilder.build("./src/P3/transit.txt", 1200);
+        RoutePlanner planner = routeBuilder.build("./src/P3/largeData.txt", 1200);
         String choice = "";
         String content = "";
         while (!choice.equals("#")) {

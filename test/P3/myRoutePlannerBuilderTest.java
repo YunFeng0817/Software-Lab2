@@ -27,7 +27,11 @@ public class myRoutePlannerBuilderTest {
     @Test
     public void testBuild() throws Exception {
         myRoutePlannerBuilder builder = new myRoutePlannerBuilder();
-        builder.build("./test/P3/transit.txt", 1200);
+        RoutePlanner planner;
+        Stop stop1 = new myStop("1", 0,1.0);
+        Stop stop2 = new myStop("5", 0,3.0);
+        planner = builder.build("./test/P3/transit.txt", 1200);
+        System.out.println(planner.computeRoute(stop1, stop2, 0).getInstructions());
     }
 
 

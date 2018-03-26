@@ -50,5 +50,10 @@ public class myStop implements Stop {
     public boolean equals(Object obj) {
         return obj == this || obj instanceof Stop && name.equals(((Stop) obj).getName());
     }
+
+    @Override
+    public String toString() {
+        return "stop name: " + name + " ,Latitude:" + longitude + " latitude: " + latitude + " ";
+    }
 }
 

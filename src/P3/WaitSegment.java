@@ -22,6 +22,6 @@ public class WaitSegment implements TripSegment {
 
     @Override
     public String toString() {
-        return "wait at stop : " + start.getLocation().getName() + " from " + start.getTime() + "s , wait " + passTime + "s ,";
+        return "wait at stop : " + start.getLocation().getName() + " from " + start.getTime() + "s , wait " + passTime + "s " + "\n";
     }
 }

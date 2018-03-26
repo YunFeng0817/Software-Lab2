@@ -7,15 +7,15 @@ public class Itinerary {
     List<TripSegment> trip = new LinkedList<>();
 
     void add(TripSegment segment) {
-        trip.add(segment);
+        trip.add(0,segment);
     }
 
     int getStartTime() {
-        return trip.get(trip.size() - 1).getStart().getTime();
+        return trip.get(1).getStart().getTime();
     }
 
     int getEndTime() {
-        return trip.get(0).getEnd().getTime();
+        return trip.get(trip.size()-1).getEnd().getTime();
     }
 
     int getWaitTime() {

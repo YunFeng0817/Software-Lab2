@@ -41,24 +41,29 @@ public class planner implements RoutePlanner {
     public Itinerary computeRoute(Stop src, Stop dest, int time) {
         startEvent = data.getBuses(src).stream().filter(item -> item.getTime() - time <= maxWaitLimit && item.getTime() - time >= 0).min(Comparator.comparingInt(StopEvent::getTime)).orElse(null);
         if (startEvent == null) {
-            System.out.println("the ride can't ride a bus in max wait time (" + maxWaitLimit + "s)");
+            System.out.println("the rider can't ride a bus in max wait time (" + maxWaitLimit + "s)");
         }
         dijkstra();
         Map.Entry<StopEvent, Integer> min = distance.entrySet().stream().filter(item -> item.getKey().getLocation().equals(dest)).min(Comparator.comparing(Map.Entry::getValue)).orElse(null);
         Itinerary trip = new Itinerary();
         if (min != null && min.getValue() != infinite) {
-            StopEvent traceNode, buffer = null;
-            while (!(traceNode = trace.get(min.getKey())).equals(startEvent)) {
+            StopEvent traceNode = min.getKey(), buffer = min.getKey();
+            do {
+                traceNode = trace.get(traceNode);
                 if (buffer != null) {
+                    if (buffer.equals(traceNode)) {
+                        System.out.println("the rider can't ride a bus");
+                        System.exit(0);
+                    }
                     TripSegment segment;
                     if (buffer.getLocation().equals(traceNode.getLocation()))
-                        segment = new WaitSegment(buffer, traceNode, buffer.getTime() - traceNode.getTime());
+                        segment = new WaitSegment(traceNode, buffer, buffer.getTime() - traceNode.getTime());
                     else
-                        segment = new BusSegment(buffer, traceNode, buffer.getTime() - traceNode.getTime());
+                        segment = new BusSegment(traceNode, buffer, buffer.getTime() - traceNode.getTime());
                     trip.add(segment);
                 }
                 buffer = traceNode;
-            }
+            } while (!traceNode.equals(startEvent));
             trip.add(new WaitSegment(new StopEvent(dest, time), startEvent, startEvent.getTime() - time));
         }
         return trip;
@@ -71,7 +76,7 @@ public class planner implements RoutePlanner {
         Set<StopEvent> stops = graph.vertices();
         for (StopEvent stopEvent : stops) {
             distance.put(stopEvent, targets.keySet().contains(stopEvent) ? targets.get(stopEvent) : infinite);
-            trace.put(stopEvent, stopEvent);
+            trace.put(stopEvent, startEvent);
         }
         distance.put(startEvent, 0);
         for (int i = 1; i <= stops.size(); i++) {
