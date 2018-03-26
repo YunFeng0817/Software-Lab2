@@ -1,6 +1,7 @@
 package P3;
 
 import P3.Stop.Stop;
+import P3.Stop.StopEvent;
 import P3.TripSegment.*;
 
 import java.util.LinkedList;
@@ -29,46 +30,54 @@ public class Itinerary {
     /**
      * get the time the rider get on the bus
      *
-     * @return the time the rider get on the bus
+     * @return the time the rider get on the bus,if the trip's size is 0(the rider can't get the destination),return -1
      */
     int getStartTime() {
-        return trip.get(1).getStart().getTime();
+        if (trip.size() != 0)
+            return trip.get(1).getStart().getTime();
+        return -1;
     }
 
     /**
      * get the time the rider get off the bus
      *
-     * @return the time the rider get off the bus
+     * @return the time the rider get off the bus,if the trip's size is 0(the rider can't get the destination),return -1
      */
     int getEndTime() {
-        return trip.get(trip.size() - 1).getEnd().getTime();
+        if (trip.size() != 0)
+            return trip.get(trip.size() - 1).getEnd().getTime();
+        return -1;
     }
 
     /**
      * get the whole time the rider spend waiting the bus
      *
-     * @return the whole time the rider spend waiting the bus
+     * @return the whole time the rider spend waiting the bus,if the trip's size is 0(the rider can't get the destination),return -1
      */
     int getWaitTime() {
-        return trip.stream().filter(item -> item instanceof WaitSegment).mapToInt(item -> item.getEnd().getTime() - item.getStart().getTime()).sum();
+        if (trip.size() != 0)
+            return trip.stream().filter(item -> item instanceof WaitSegment).mapToInt(item -> item.getEnd().getTime() - item.getStart().getTime()).sum();
+        return -1;
     }
 
     /**
      * get the start location of this trip
      *
-     * @return get the start location of this trip
+     * @return get the start location of this trip,if the trip's size is 0(the rider can't get the destination),return null
      */
     Stop getStartLocation() {
-        return trip.get(trip.size() - 1).getStart().getLocation();
+        return trip.stream().filter(item -> item instanceof BusSegment).map(TripSegment::getStart).map(StopEvent::getLocation).findFirst().orElse(null);
     }
 
     /**
      * get the end location of this trip
      *
-     * @return the end location of this trip
+     * @return the end location of this trip,if the trip's size is 0(the rider can't get the destination),return null
      */
     Stop getEndLocation() {
-        return trip.get(0).getEnd().getLocation();
+        if (trip.size() != 0)
+            return trip.get(trip.size() - 1).getEnd().getLocation();
+        return null;
     }
 
     /**
@@ -79,8 +88,7 @@ public class Itinerary {
     String getInstructions() {
         if (trip.size() != 0)
             return trip.stream().map(Object::toString).reduce("", (pre, next) -> pre + next);
-        else
-            return "the rider can't ride a bus in max wait time";
+        return "the rider can't ride a bus in max wait time";
     }
 
     @Override

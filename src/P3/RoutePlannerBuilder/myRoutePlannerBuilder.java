@@ -40,19 +40,26 @@ public class myRoutePlannerBuilder implements RoutePlannerBuilder {
         Graph<StopEvent> graph = Graph.empty();
         // read and parse data from the file
         while ((line = content.readLine()) != null) {
+            if (line.equals(""))
+                continue;
             words = line.split(",");
             String route = words[0];
             int lineNum = Integer.parseInt(words[1]);
             StopEvent buffer = null;
             for (int i = 0; i < lineNum; i++) {
+
                 if ((line = content.readLine()) == null) {
                     throw new RuntimeException("the file form error,can't parse it");
+                }
+                if (line.equals("")) {
+                    i--;
+                    continue;
                 }
                 words = line.split(",");
                 // add edge at one bus route
                 try {
                     Stop stop = new myStop(words[0], Double.parseDouble(words[1]), Double.parseDouble(words[2]));
-                    StopEvent stopEvent = new StopEvent(route, stop, Integer.parseInt(words[3]));
+                    StopEvent stopEvent = new StopEvent(route, stop, (int) Double.parseDouble(words[3]));
                     stops.add(stop);
                     graph.add(stopEvent);
                     if (buffer != null) {

@@ -1,7 +1,6 @@
 package P3;
 
 import P3.RoutePlanner.RoutePlanner;
-import P3.RoutePlanner.planner;
 import P3.RoutePlannerBuilder.myRoutePlannerBuilder;
 import P3.Stop.Stop;
 import P3.Stop.StopEvent;
