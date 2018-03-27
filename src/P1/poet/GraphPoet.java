@@ -80,7 +80,7 @@ public class GraphPoet {
      * @param corpus text file from which to derive the poet's affinity graph
      * @throws IOException if the corpus file cannot be found or read
      */
-    public GraphPoet(File corpus) throws IOException {
+    GraphPoet(File corpus) throws IOException {
         BufferedReader data = new BufferedReader(new FileReader(corpus));
         String line;
         String[] words;
@@ -115,7 +115,7 @@ public class GraphPoet {
      * @param input string from which to create the poem
      * @return poem (as described above)
      */
-    public String poem(String input) {
+    String poem(String input) {
         List<String> inputWords;
         String[] test = input.split(" ");
         inputWords = new LinkedList<>(Arrays.asList(test));
@@ -124,20 +124,20 @@ public class GraphPoet {
             return " ";
         }
         String previous = iterator.next();
-        String next, result;
+        String next;StringBuilder result;
         while (iterator.hasNext()) {
             next = iterator.next();
-            result = getBridge(previous, next);
-            if (!result.equals("")) {
+            result = new StringBuilder(getBridge(previous, next));
+            if (!result.toString().equals("")) {
                 iterator.previous();
-                iterator.add(result);
+                iterator.add(result.toString());
                 iterator.next();
             }
             previous = next;
         }
-        result = "";
+        result = new StringBuilder();
         for (String words : inputWords) {
-            result += words + " ";
+            result.append(words).append(" ");
         }
         checkRep();
         return result.substring(0, result.length() - 1);

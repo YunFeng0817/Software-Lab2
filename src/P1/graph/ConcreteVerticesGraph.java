@@ -31,7 +31,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     }
 
     private void checkRep() {
-        for (Vertex<L> vertex : vertices) {
+        for (Vertex vertex : vertices) {
             assert (vertex.getLabel() != null);
         }
     }
@@ -174,11 +174,11 @@ class Vertex<L> {
     }
 
 
-    public L getLabel() {
+    L getLabel() {
         return label;
     }
 
-    public int setInEdge(L source, int weight) {
+    int setInEdge(L source, int weight) {
         int lastWeight;
         for (Map.Entry<L, Integer> entry : inEdges.entrySet()) {
             if (entry.getKey().equals(source)) {
@@ -192,7 +192,7 @@ class Vertex<L> {
         return 0;
     }
 
-    public int setOutEdge(L target, int weight) {
+    int setOutEdge(L target, int weight) {
         int lastWeight;
         for (Map.Entry<L, Integer> entry : outEdges.entrySet()) {
             if (entry.getKey().equals(target)) {
@@ -206,21 +206,21 @@ class Vertex<L> {
         return 0;
     }
 
-    public Map<L, Integer> getSources() {
+    Map<L, Integer> getSources() {
         Map<L, Integer> sources = new HashMap<>();
         sources.putAll(inEdges);
         checkRep();
         return sources;
     }
 
-    public Map<L, Integer> getTargets() {
+    Map<L, Integer> getTargets() {
         Map<L, Integer> targets = new HashMap<>();
         targets.putAll(outEdges);
         checkRep();
         return targets;
     }
 
-    public int removeInEdge(L source) {
+    int removeInEdge(L source) {
         for (Map.Entry<L, Integer> entry : inEdges.entrySet()) {
             if (entry.getKey().equals(source)) {
                 inEdges.remove(entry);
@@ -232,7 +232,7 @@ class Vertex<L> {
         return 0;
     }
 
-    public int removeOutEdge(L target) {
+    int removeOutEdge(L target) {
         for (Map.Entry<L, Integer> entry : outEdges.entrySet()) {
             if (entry.getKey().equals(target)) {
                 outEdges.remove(entry);

@@ -24,16 +24,9 @@ public class Main {
      * @throws IOException if a poet corpus file cannot be found or read
      */
     public static void main(String[] args) throws IOException {
-//        final GraphPoet nimoy = new GraphPoet(new File("src/P1/poet/mugar-omni-theater.txt"));
-//        final String input = "Test the system.";
-//        System.out.println(input + "\n>>>\n" + nimoy.poem(input));
-        List<Integer> number = new LinkedList<>();
-        number.addAll(Arrays.asList(10, 9, 8, 7, 6, 5, 4, 3, 2, 1));
-        for (Integer i : number) {
-            if (i > 5)
-                number.remove(i);
-        }
-        System.out.println(number.toString());
+        final GraphPoet nimoy = new GraphPoet(new File("src/P1/poet/mugar-omni-theater.txt"));
+        final String input = "Test the system.";
+        System.out.println(input + "\n>>>\n" + nimoy.poem(input));
     }
 
 }
